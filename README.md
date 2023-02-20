@@ -118,3 +118,4 @@ $firewall | Set-AzFirewall
 ```
 After that, you would be able to delete the resources without any error.
 
+# vwan-azfw-dnsresolver

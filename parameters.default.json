@@ -1,0 +1,248 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "env": {
+            "value": "demo"
+        },
+        "tags": {
+            "value": {
+                "project": "hub"
+            }
+        },
+        "resourceGroupNames": {
+            "value": {
+                "monitoring": "rg-monitor",
+                "hub": "rg-hub",
+                "shared": "rg-shared",
+                "bastion": "rg-bastion",
+                "spoke": "rg-spoke",
+                "security": "rg-security",
+                "avd": "rg-avd"
+            }
+        },
+        "monitoringOptions": {
+            "value": {
+                "deployLogAnalyticsWorkspace": true,
+                "existingLogAnalyticsWorkspaceName": "",
+                "diagnosticsStorageAccountName": "sadiagdataavd"
+            }
+        },
+        "dnsResolverInfo": {
+            "value": {
+                "name": "dns-resolver",
+                "inboundEndpointName": "inbound-endpoint",
+                "inboundEndpointIp": "10.0.17.4",
+                "outboundEndpointName": "outbound-endpoint",
+                "dnsForwardingRulesetsName": "dnsfwrulesets"
+            }
+        },
+        "sharedVnetInfo": {
+            "value": {
+                "name": "vnet-shared",
+                "range": "10.0.17.0/24",
+                "centrilazedResolverDns": true,
+                "subnets": [
+                    {
+                        "name": "snet-dns-inbound",
+                        "range": "10.0.17.0/28",
+                        "delegations": "Microsoft.Network/dnsResolvers"
+                    },
+                    {
+                        "name": "snet-dns-outbound",
+                        "range": "10.0.17.16/28",
+                        "delegations": "Microsoft.Network/dnsResolvers"
+                    }
+                ]
+            }
+        },
+        "bastionVnetInfo": {
+            "value": {
+                "name": "vnet-bastion",
+                "range": "10.0.1.0/24",
+                "centrilazedResolverDns": false,
+                "subnets": [
+                    {
+                        "name": "AzureBastionSubnet",
+                        "range": "10.0.1.0/26",
+                        "delegations": ""
+                    }
+                ]
+            }
+        },
+        "spokeVnetInfo": {
+            "value": {
+                "name": "vnet-spoke",
+                "range": "10.0.2.0/24",
+                "centrilazedResolverDns": true,
+                "subnets": [
+                    {
+                        "name": "snet-app",
+                        "range": "10.0.2.0/26",
+                        "delegations": ""
+                    },
+                    {
+                        "name": "snet-plinks",
+                        "range": "10.0.2.64/26",
+                        "delegations": ""
+                    }
+                ]
+            }
+        },
+        "vwanName": {
+            "value": "vwan"
+        },
+        "hubVnetInfo": {
+            "value": {
+                "name": "hub",
+                "range": "10.0.0.0/24"
+            }
+        },
+        "avdVnetInfo": {
+            "value": {
+                "name": "vnet-avd",
+                "range": "10.0.4.0/23",
+                "centrilazedResolverDns": true,
+                "subnets": [
+                    {
+                        "name": "snet-profile-shares",
+                        "range": "10.0.4.0/27",
+                        "delegations": ""
+                    },
+                    {
+                        "name": "snet-hp-oper-pool",
+                        "range": "10.0.4.128/27",
+                        "delegations": ""
+                    },
+                    {
+                        "name": "snet-hp-data-pers",
+                        "range": "10.0.4.32/27",
+                        "delegations": ""
+                    },
+                    {
+                        "name": "snet-hp-data-pool",
+                        "range": "10.0.4.64/27",
+                        "delegations": ""
+                    },
+                    {
+                        "name": "snet-hp-oper-pers",
+                        "range": "10.0.4.96/27",
+                        "delegations": ""
+                    }
+                ]
+            }
+        },
+        "vmSpoke": {
+            "value": {
+                "name": "vm-spoke",
+                "sku": "Standard_DS2_V2",
+                "nicName": "nic-vm-spoke",
+                "adminUsername": "azureAdmin"
+            }
+        },
+        "privateEndpoints": {
+            "value": {
+                "spokeStorageAccount": {
+                    "name": "blobdemospoke",
+                    "privateEndpointName": "plink-blob-spoke"
+                }
+            }
+        },
+        "firewallConfiguration": {
+            "value": {
+                "name": "azfw",
+                "policy": {
+                    "name": "fwpolicy-001",
+                    "snatRanges": [
+                        "10.0.0.0/8",
+                        "172.16.0.0/12",
+                        "192.168.0.0/16",
+                        "198.18.0.0/15",
+                        "100.64.0.0/10"
+                    ]
+                },
+                "appCollectionRules": {
+                    "name": "fwapprulegroup",
+                    "rulesInfo": {
+                        "priority": 300,
+                        "ruleCollections": [
+                            {
+                                "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+                                "action": {
+                                    "type": "Allow"
+                                },
+                                "name": "AzureMonitorRuleCollection",
+                                "priority": 100,
+                                "rules": [
+                                    {
+                                        "ruleType": "ApplicationRule",
+                                        "name": "Allow-AzureMonitor",
+                                        "protocols": [
+                                            {
+                                                "protocolType": "Https",
+                                                "port": 443
+                                            }
+                                        ],
+                                        "targetFqdns": [
+                                            "*.monitor.core.windows.net"
+                                        ],
+                                        "sourceAddresses": [
+                                            "*"
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "networkCollectionRules": {
+                    "name": "fwnetrulegroup",
+                    "rulesInfo": {
+                        "priority": 200,
+                        "ruleCollections": [
+                            {
+                                "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+                                "name": "Windows",
+                                "action": {
+                                    "type": "Allow"
+                                },
+                                "priority": 210,
+                                "rules": [
+                                    {
+                                        "ruleType": "NetworkRule",
+                                        "sourceAddresses": [
+                                            "*"
+                                        ],
+                                        "destinationAddresses": [
+                                            "*"
+                                        ],
+                                        "destinationPorts": [
+                                            "*"
+                                        ],
+                                        "ipProtocols": [
+                                            "Any"
+                                        ],
+                                        "name": "All-Traffic-Allowed"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "dnatCollectionRules": {
+                    "name": "fwdnatrulegroup",
+                    "priority": "",
+                    "ruleSet": []
+                }
+            }
+        },
+        "bastionConfiguration": {
+            "value": {
+                "name": "az-bastion-host"
+            }
+        }
+    }
+}

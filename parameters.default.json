@@ -113,23 +113,28 @@
                         "delegations": ""
                     },
                     {
-                        "name": "snet-hp-oper-pool",
-                        "range": "10.0.4.128/27",
-                        "delegations": ""
-                    },
-                    {
-                        "name": "snet-hp-data-pers",
+                        "name": "snet-avd-pl",
                         "range": "10.0.4.32/27",
                         "delegations": ""
                     },
                     {
-                        "name": "snet-hp-data-pool",
+                        "name": "snet-hp-data-pers",
                         "range": "10.0.4.64/27",
                         "delegations": ""
                     },
                     {
-                        "name": "snet-hp-oper-pers",
+                        "name": "snet-hp-data-pool",
                         "range": "10.0.4.96/27",
+                        "delegations": ""
+                    },
+                    {
+                        "name": "snet-hp-oper-pers",
+                        "range": "10.0.4.128/27",
+                        "delegations": ""
+                    },
+                    {
+                        "name": "snet-hp-oper-pool",
+                        "range": "10.0.4.160/27",
                         "delegations": ""
                     }
                 ]

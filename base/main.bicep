@@ -89,6 +89,11 @@ var privateDnsZonesInfo = [
     vnetLinkName: 'vnet-link-dfs-to-'
     vnetName: sharedVnetInfo.name
   }//Azure Data Lake File System Gen2 (Microsoft.Storage/storageAccounts) / Data Lake File System Gen2 (dfs, dfs_secondary)
+  {
+    name: format('privatelink.wvd.microsoft.com')
+    vnetLinkName: 'vnet-link-wvd-to-'
+    vnetName: sharedVnetInfo.name
+  }//Azure WVD
 ]
 
 //Add in this section the dns forwarding rules you need 
@@ -123,6 +128,12 @@ var dnsForwardingRulesInfo = [
   {
     name: 'toSql'
     domain: format('privatelink{0}.', environment().suffixes.sqlServerHostname)
+    state: 'Enabled'
+    dnsServers:  []
+  }
+  {
+    name: 'toWvd'
+    domain: format('privatelink.wvd.microsoft.com.')
     state: 'Enabled'
     dnsServers:  []
   }

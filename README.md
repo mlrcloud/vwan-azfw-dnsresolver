@@ -1,6 +1,6 @@
 # Fast Deploy: Hub-spoke network topology with Azure Virtual WAN, Azure Firewall and DNS Private Resolver
 
-This repository contains an Azure Bicep template to simplify the deployment of a Hub and Spoke topology using Azure Virtual WAN secured with Azure Firewall in test or demo scenarios. It also includes Azure DNS Private Resolver as DNS for hybrid domain resolution. This template may be used by other scenarios as their networking infrastructure and be built on top of it (i.e. [Fast Deploy: Azure Virtual Desktop](https://github.com/MS-ES-DEMO/avd-consumption-fast-deploy)).
+This repository contains an Azure Bicep template to simplify the deployment of a Hub and Spoke topology using Azure Virtual WAN secured with Azure Firewall in test or demo scenarios. It also includes Azure DNS Private Resolver as DNS for hybrid domain resolution. This template may be used by other scenarios as their networking infrastructure and be built on top of it (i.e. [Fast Deploy: Azure Virtual Desktop](https://github.com/mlrcloud/avd-fast-deploy)).
 
 The following diagrams show a detailed architecture of each of the logical resources created by this template. You also can use Bicep Visualizer from Visual Studio Code bicep extension to get a relationship diagram between deployed logical resources. Relevant resources for the specific scenario covered in this repository are deployed into the following resource groups:
 
@@ -23,7 +23,7 @@ The following resource groups are associated with other scenarios using this tem
 
 ![rg-avd resources](/doc/images/visualizer/rg-avd.png)
 
-For more information on how to deploy these scenarios, see [Fast Deploy: Azure Virtual Desktop](https://github.com/MS-ES-DEMO/avd-consumption-fast-deploy).
+For more information on how to deploy these scenarios, see [Fast Deploy: Azure Virtual Desktop](https://github.com/mlrcloud/avd-fast-deploy).
 
 The following diagram shows a detailed architecture of the networking topology resources created by this template. 
 

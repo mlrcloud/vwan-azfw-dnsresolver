@@ -4,7 +4,7 @@ param (
   [string] 
   $templateFile = ".\base\main.bicep",
   [string]
-  $parameterFile = "parameters.default.json",
+  $parameterFile = "parameters.json",
   [string] 
   $deploymentPrefix='vWAN-Hub-Spoke'
   )

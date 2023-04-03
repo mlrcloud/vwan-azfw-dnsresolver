@@ -116,25 +116,25 @@ var dnsForwardingRulesInfo = [
   {
     name: 'toBlob'
     domain: format('privatelink.blob.{0}.', environment().suffixes.storage)
-    state: 'Enabled'
+    state: 'Enabled' //If centrilazedResolverDns=True you should set this to 'Disabled'
     dnsServers:  []
   }
   {
     name: 'toFile'
     domain: format('privatelink.file.{0}.', environment().suffixes.storage)
-    state: 'Enabled'
+    state: 'Enabled' //If centrilazedResolverDns=True you should set this to 'Disabled'
     dnsServers:  []
   }
   {
     name: 'toSql'
     domain: format('privatelink{0}.', environment().suffixes.sqlServerHostname)
-    state: 'Enabled'
+    state: 'Enabled' //If centrilazedResolverDns=True you should set this to 'Disabled'
     dnsServers:  []
   }
   {
     name: 'toWvd'
     domain: format('privatelink.wvd.microsoft.com.')
-    state: 'Enabled'
+    state: 'Enabled' //If centrilazedResolverDns=True you should set this to 'Disabled'
     dnsServers:  []
   }
 ]

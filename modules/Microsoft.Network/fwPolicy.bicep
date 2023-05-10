@@ -4,7 +4,12 @@ param tags object
 param logWorkspaceName string 
 param monitoringResourceGroupName string
 param fwPolicyInfo object 
-
+param enableProxy bool
+param dnsResolverInboundEndpointIp string
+var dnsServers = [
+  dnsResolverInboundEndpointIp
+  '168.63.129.16'
+]
 
 resource logWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = {
   name: logWorkspaceName
@@ -25,6 +30,10 @@ resource fwPolicy 'Microsoft.Network/firewallPolicies@2021-02-01' = {
     }
     snat: {
       privateRanges: fwPolicyInfo.snatRanges
+    }
+    dnsSettings: {
+      servers: (enableProxy) ? dnsServers : json('null')
+      enableProxy: enableProxy
     }
     insights: {
       isEnabled: true

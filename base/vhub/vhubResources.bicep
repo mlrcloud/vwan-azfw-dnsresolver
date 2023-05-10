@@ -19,6 +19,8 @@ param dnatRuleCollectionGroupName string
 param firewallName string
 param destinationAddresses array
 param hubVnetConnectionsInfo array
+param enableDnsProxy bool
+param dnsResolverInboundEndpointIp string
 
 
 var dnatRulesInfo = {
@@ -88,6 +90,8 @@ module fwPolicyResources '../../modules/Microsoft.Network/fwPolicy.bicep' = {
     monitoringResourceGroupName: monitoringResourceGroupName
     logWorkspaceName: logWorkspaceName
     fwPolicyInfo: fwPolicyInfo
+    enableProxy: enableDnsProxy
+    dnsResolverInboundEndpointIp: dnsResolverInboundEndpointIp
   }
 }
 

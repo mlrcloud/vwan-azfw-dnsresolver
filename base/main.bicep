@@ -460,6 +460,8 @@ module vhubResources 'vhub/vhubResources.bicep' = {
     firewallName:firewallName
     destinationAddresses: privateTrafficPrefix
     hubVnetConnectionsInfo: hubVnetConnectionsInfo
+    enableDnsProxy: enableFirewallDnsProxy
+    dnsResolverInboundEndpointIp: dnsResolverInboundIp
   }
 }
 

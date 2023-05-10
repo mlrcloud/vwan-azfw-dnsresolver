@@ -102,40 +102,56 @@ var dnsForwardingRulesInfo = [
     name: 'toOnpremise'
     domain: 'mydomain.local.'
     state: 'Enabled'
-    dnsServers:  [
+    dnsServers: (enableFirewallDnsProxy) ? [
       {
-          ipAddress: '1.1.1.1'
-          port: 53
+        ipAddress: fwPrivateIp
+        port: 53
       }
-      {
-          ipAddress: '1.2.3.4'
-          port: 53
-      }
-    ]
+    ] : []
   }
   {
     name: 'toBlob'
     domain: format('privatelink.blob.{0}.', environment().suffixes.storage)
     state: 'Enabled' //If centrilazedResolverDns=True you should set this to 'Disabled'
-    dnsServers:  []
+    dnsServers: (enableFirewallDnsProxy) ? [
+      {
+        ipAddress: fwPrivateIp
+        port: 53
+      }
+    ] : []
   }
   {
     name: 'toFile'
     domain: format('privatelink.file.{0}.', environment().suffixes.storage)
     state: 'Enabled' //If centrilazedResolverDns=True you should set this to 'Disabled'
-    dnsServers:  []
+    dnsServers: (enableFirewallDnsProxy) ? [
+      {
+        ipAddress: fwPrivateIp
+        port: 53
+      }
+    ] : []
   }
   {
     name: 'toSql'
     domain: format('privatelink{0}.', environment().suffixes.sqlServerHostname)
     state: 'Enabled' //If centrilazedResolverDns=True you should set this to 'Disabled'
-    dnsServers:  []
+    dnsServers: (enableFirewallDnsProxy) ? [
+      {
+        ipAddress: fwPrivateIp
+        port: 53
+      }
+    ] : []
   }
   {
     name: 'toWvd'
     domain: format('privatelink.wvd.microsoft.com.')
     state: 'Enabled' //If centrilazedResolverDns=True you should set this to 'Disabled'
-    dnsServers:  []
+    dnsServers: (enableFirewallDnsProxy) ? [
+      {
+        ipAddress: fwPrivateIp
+        port: 53
+      }
+    ] : []
   }
 ]
 
@@ -196,6 +212,8 @@ var networkRuleCollectionGroupName = firewallConfiguration.networkCollectionRule
 var networkRulesInfo = firewallConfiguration.networkCollectionRules.rulesInfo
 
 var dnatRuleCollectionGroupName  = firewallConfiguration.dnatCollectionRules.name
+
+param enableFirewallDnsProxy bool = true
 
 // TODO If moved to parameters.json, self-reference to other parameters is not supported
 @description('Name for hub virtual connections')
@@ -297,7 +315,7 @@ module sharedResources 'shared/sharedResources.bicep' = {
     centrilazedResolverDns: centrilazedResolverDnsOnSharedVnet
     dnsResolverName: dnsResolverName
     dnsResolverInboundEndpointName: dnsResolverInboundEndpointName
-    dnsResolverInboundEndpointIp: dnsResolverInboundIp
+    dnsResolverInboundEndpointIp: (enableFirewallDnsProxy) ? fwPrivateIp : dnsResolverInboundIp
     dnsResolverOutboundEndpointName: dnsResolverOutboundEndpointName
     dnsForwardingRulesetsName: dnsForwardingRulesetsName
     dnsForwardingRules: dnsForwardingRulesInfo
@@ -327,7 +345,7 @@ module bastionResources 'bastion/bastionResources.bicep' = {
     vnetInfo: bastionVnetInfo 
     snetsInfo: bastionSnetsInfo
     centrilazedResolverDns: centrilazedResolverDnsOnBastionVnet
-    dnsResolverInboundEndpointIp: dnsResolverInboundIp
+    dnsResolverInboundEndpointIp: (enableFirewallDnsProxy) ? fwPrivateIp : dnsResolverInboundIp
     bastionName: bastionName
   }
 }
@@ -355,7 +373,7 @@ module spokeResources 'spokes/spokeResources.bicep' = {
     snetsInfo: spokeSnetsInfo 
     nicName: spokeNicName
     centrilazedResolverDns: centrilazedResolverDnsOnSpokeVnet
-    dnsResolverInboundEndpointIp: dnsResolverInboundIp
+    dnsResolverInboundEndpointIp: (enableFirewallDnsProxy) ? fwPrivateIp : dnsResolverInboundIp
     dnsForwardingRulesetsName: dnsForwardingRulesetsName
     sharedResourceGroupName: sharedResourceGroupName
     vmName: vmSpokeName
@@ -394,7 +412,7 @@ module avdResources 'avd/avdResources.bicep' = {
     vnetInfo: avdVnetInfo 
     snetsInfo: avdSnetsInfo
     centrilazedResolverDns: centrilazedResolverDnsOnAvdVnet
-    dnsResolverInboundEndpointIp: dnsResolverInboundIp
+    dnsResolverInboundEndpointIp: (enableFirewallDnsProxy) ? fwPrivateIp : dnsResolverInboundIp
     dnsForwardingRulesetsName: dnsForwardingRulesetsName
     sharedResourceGroupName: sharedResourceGroupName
   }
@@ -404,6 +422,7 @@ module avdResources 'avd/avdResources.bicep' = {
   Network connectivity and security
 */
 // Checked
+var fwPrivateIp = '10.0.0.132'
 
 resource securityResourceGroup 'Microsoft.Resources/resourceGroups@2021-01-01' = {
   name: securityResourceGroupName

@@ -26,6 +26,9 @@ module vnetResources '../../modules/Microsoft.Network/vnet.bicep' = {
 
 module dnsResolverResources '../../modules/Microsoft.Network/dnsResolver.bicep' = {
   name: 'dnsResolverResources_Deploy'
+  dependsOn: [
+    vnetResources
+  ]
   params: {
     location: location
     tags: tags

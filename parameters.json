@@ -104,7 +104,7 @@
         "avdVnetInfo": {
             "value": {
                 "name": "vnet-avd",
-                "range": "10.0.4.0/23",
+                "range": "10.0.4.0/24",
                 "centrilazedResolverDns": true,
                 "subnets": [
                     {
